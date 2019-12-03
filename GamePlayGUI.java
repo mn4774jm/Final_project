@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static input.InputUtils.*;
 
 public class GamePlayGUI extends JFrame {
 
@@ -65,12 +69,20 @@ public class GamePlayGUI extends JFrame {
 
         public void addPlayers(){
         // ask for number of turns
+        //TODO validation will not allow the user to exit directly from the window. have to close the application from the task bar
         String playerNum = showInputDialog("Enter number of players");
+            Pattern p = Pattern.compile("[A-Z,a-z,&%$#@!()*^]");
+            Matcher m = p.matcher(playerNum);
+            while (m.find()) {
+                JOptionPane.showMessageDialog(null, "Please enter only numbers");
+                playerNum = showInputDialog("Enter number of players");
+            }
         // convert to integer
         int convertedNum = Integer.parseInt(playerNum);
         // loop through number of players, ask player names, add to Jtablemodel and tracking list
         for (int x = 1; x < convertedNum+1; x++){
             String playerName = showInputDialog("Enter player #"+x+"'s name");
+            //add cell directly to jtable with zero as the default for row 0
             String[] newTableRow = {playerName, "0"};
             tableModel.addRow(newTableRow);
             playerTurnList.add(playerName);
@@ -95,7 +107,7 @@ public class GamePlayGUI extends JFrame {
                     turnCounter = 0;
                     playerTurnLabel.setText(playerTurnList.get(turnCounter)+"'s turn");
                 }
-
+                enterWordTextBox.setText("");
             });
         }
 
