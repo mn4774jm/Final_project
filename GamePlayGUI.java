@@ -89,17 +89,19 @@ public class GamePlayGUI extends JFrame {
         }
         }
         //TODO get value from jtablemodel for current player's score and add new score from the textbox
+        //TODO add validation for score input
         public void buttonListeners(){
             enterWordButton.addActionListener(event -> {
-                String scoreString = enterWordTextBox.getText();
-                int scoreInt = Integer.parseInt(scoreString);
+                int scoreString = Integer.parseInt(enterWordTextBox.getText());
+
+//                int scoreInt = Integer.parseInt(scoreString);
          //TODO try again to pull data directly from jtable as an object and convert
 
 //                Object currentObject = tableModel.getValueAt(turnCounter,1);
 //                String current = (String) currentObject;
 //                int addInt = Integer.parseInt(current);
 
-                tableModel.setValueAt(scoreInt, turnCounter,1);
+                tableModel.setValueAt(scoreString, turnCounter,1);
                 if(turnCounter < playerTurnList.size()-1){
                     turnCounter += 1;
                     playerTurnLabel.setText(playerTurnList.get(turnCounter)+"'s turn");
