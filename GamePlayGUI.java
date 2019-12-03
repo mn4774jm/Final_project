@@ -76,9 +76,10 @@ public class GamePlayGUI extends JFrame {
             while (m.find()) {
                 JOptionPane.showMessageDialog(null, "Please enter only numbers");
                 playerNum = showInputDialog("Enter number of players");
-            }
+            }//TODO make a seperate method for player names after player numbers
         // convert to integer
         int convertedNum = Integer.parseInt(playerNum);
+
         // loop through number of players, ask player names, add to Jtablemodel and tracking list
         for (int x = 1; x < convertedNum+1; x++){
             String playerName = showInputDialog("Enter player #"+x+"'s name");
@@ -95,11 +96,12 @@ public class GamePlayGUI extends JFrame {
                 int scoreString = Integer.parseInt(enterWordTextBox.getText());
 
 //                int scoreInt = Integer.parseInt(scoreString);
-         //TODO try again to pull data directly from jtable as an object and convert
+         //TODO try again to pull data directly from jtable as an object and convert; backup plan is hashmap
 
 //                Object currentObject = tableModel.getValueAt(turnCounter,1);
 //                String current = (String) currentObject;
-//                int addInt = Integer.parseInt(current);
+//                int addInt = Integer.valueOf((String) currentObject);
+//                int finalInt = addInt + scoreString;
 
                 tableModel.setValueAt(scoreString, turnCounter,1);
                 if(turnCounter < playerTurnList.size()-1){
