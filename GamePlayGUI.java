@@ -43,9 +43,7 @@ public class GamePlayGUI extends JFrame {
 
 
     GamePlayGUI(Map<String, String> playerData) {
-
-
-
+        //set-up columns
         tableModel.addColumn("Player Name");
         tableModel.addColumn("Current Score");
 
@@ -53,13 +51,14 @@ public class GamePlayGUI extends JFrame {
         for (String data : playerData.keySet()) {
             tableModel.addRow(new String[]{data, playerData.get(data)});
         }
+        //set jtables data source to the model
         playerTable.setModel(tableModel);
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setContentPane(mainPanel);
         pack();
         setVisible(true);
-
+        setTitle("Scrabble Tracking Application");
 
         buttonListeners();
         addPlayers();
@@ -91,28 +90,48 @@ public class GamePlayGUI extends JFrame {
         }
         //TODO get value from jtablemodel for current player's score and add new score from the textbox
         //TODO add validation for score input
+
         public void buttonListeners(){
-            enterWordButton.addActionListener(event -> {
-                int scoreString = Integer.parseInt(enterWordTextBox.getText());
+            //method call for user score entry
+            enterWordButton.addActionListener(e -> enterScores());
+            //method to consult dictionary
+            dictionaryButton.addActionListener(e -> dictionaryCall());
+            //method to challenge
+            challengeButton.addActionListener(e -> challengeCall());
+            //finish game
+            finishButton.addActionListener(e -> finishCall());
+        }
 
-//                int scoreInt = Integer.parseInt(scoreString);
-         //TODO try again to pull data directly from jtable as an object and convert; backup plan is hashmap
+        public void enterScores() {
+            //get value from enterWord text box
+            int scoreString = Integer.parseInt(enterWordTextBox.getText());
+            //pull current player score from the table model
+            int pulledValue = Integer.parseInt(tableModel.getValueAt(turnCounter, 1).toString());
+            //add text box score to jtable score
+            int finalInt = pulledValue + scoreString;
+            //set set score to appropriate cell
+            tableModel.setValueAt(finalInt, turnCounter, 1);
+            //if not the last player in list, add 1 to the turn counter to advance the game
+            if (turnCounter < playerTurnList.size() - 1) {
+                turnCounter += 1;
+                playerTurnLabel.setText(playerTurnList.get(turnCounter) + "'s turn");
+            } else {
+                //if last player in list reset counter to 0
+                turnCounter = 0;
+                playerTurnLabel.setText(playerTurnList.get(turnCounter) + "'s turn");
+            }
+            //clear text box after turn
+            enterWordTextBox.setText("");
+        }
 
-//                Object currentObject = tableModel.getValueAt(turnCounter,1);
-//                String current = (String) currentObject;
-//                int addInt = Integer.valueOf((String) currentObject);
-//                int finalInt = addInt + scoreString;
-
-                tableModel.setValueAt(scoreString, turnCounter,1);
-                if(turnCounter < playerTurnList.size()-1){
-                    turnCounter += 1;
-                    playerTurnLabel.setText(playerTurnList.get(turnCounter)+"'s turn");
-                }else{
-                    turnCounter = 0;
-                    playerTurnLabel.setText(playerTurnList.get(turnCounter)+"'s turn");
-                }
-                enterWordTextBox.setText("");
-            });
+        public void dictionaryCall(){
+        //TODO build dictionary API call
+        }
+        public void challengeCall(){
+        //TODO set up challenge method
+        }
+        public void finishCall(){
+        //TODO set up finish call; decide between JOption and new window with other options
         }
 
     protected String showInputDialog(String question) {
