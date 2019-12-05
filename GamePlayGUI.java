@@ -2,12 +2,11 @@ package Final_Project;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+
 
 import static input.InputUtils.*;
 
@@ -32,9 +31,10 @@ public class GamePlayGUI extends JFrame {
     private JButton finishButton;
     private JLabel playerTurnLabel;
 
-    private Controller controller;
+    private WordController wordController;
 
     //private DefaultListModel<scoreObject> PlayerScoreModel;
+    Map<String, String> playerData = new HashMap<>();
     DefaultTableModel tableModel = new DefaultTableModel();
     List<String> playerTurnList = new ArrayList();
 
@@ -42,7 +42,9 @@ public class GamePlayGUI extends JFrame {
 
 
 
-    GamePlayGUI(Map<String, String> playerData) {
+    GamePlayGUI(WordController wordController) {
+
+        this.wordController = wordController;
         //set-up columns
         tableModel.addColumn("Player Name");
         tableModel.addColumn("Current Score");
@@ -126,6 +128,13 @@ public class GamePlayGUI extends JFrame {
 
         public void dictionaryCall(){
         //TODO build dictionary API call
+        String wordToCheck = dictionaryTextBox.getText();
+        WordObject wordSearch = wordController.searchForWord(wordToCheck);
+        if (wordSearch != null) {
+            showMessageDialog("Congratulations! Match found.");
+//        }else{
+//            showMessageDialog("No matches found");
+        }
         }
         public void challengeCall(){
         //TODO set up challenge method
@@ -136,6 +145,9 @@ public class GamePlayGUI extends JFrame {
 
     protected String showInputDialog(String question) {
         return JOptionPane.showInputDialog(this, question);
+    }
+    protected void showMessageDialog(String message) {
+        JOptionPane.showMessageDialog(this, message);
     }
 
 }
